@@ -153,13 +153,6 @@ class DSLopChoDuyetPage extends Component {
             </Sider>
 
             {/* Main Content */}
-            <Content style={{ padding: '24px', background: '#fff' }}>
-              <div style={{ marginBottom: '24px' }}>
-                <Title level={4} style={{ margin: 0 }}>Danh sách học sinh</Title>
-              </div>
-            </Content>
-
-            {/* Main Content */}
             <Content style={{ padding: '24px', background: '#fff', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
               {/* Search Bar */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', gap: '16px' }}>

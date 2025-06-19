@@ -7,7 +7,7 @@ import DSLopChoDuyetPage from './Pages/DSLopChoDuyetPage'
 function App() {
 
   return (
-    <DSLopChoDuyetPage />
+    <ChiTietLopPage />
   )
 }
 

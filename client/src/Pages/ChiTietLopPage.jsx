@@ -157,8 +157,7 @@ const ChiTietLopPage = () => {
                     fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px'
                   }}>
                   <UserOutlined />
-                  Danh sách lớp
-                  <span style={{ marginLeft: 'auto' }}>▶</span>
+                  Danh sách lớp ▶
                 </Button>
 
                 <Button
