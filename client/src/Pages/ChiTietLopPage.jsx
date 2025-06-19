@@ -165,7 +165,7 @@ const ChiTietLopPage = () => {
                   type="text"
                   style={{ width: '100%', textAlign: 'left', padding: '12px 16px', height: 'auto', color: '#333', background: 'transparent', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}
                 >
-                  ✓ Chỉ duyệt
+                  ✓ Chờ duyệt
                 </Button>
               </div>
             </div>
