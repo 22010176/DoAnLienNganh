@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { Layout, Table, Button, Input, Select, Modal, Typography, Space, Popconfirm, message, Avatar } from 'antd';
-import { SearchOutlined, PlusOutlined, DeleteOutlined, ArrowRightOutlined, UserOutlined, BellOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, DeleteOutlined, PlusOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Input, Layout, Modal, Popconfirm, Select, Space, Table, Typography, message } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import PageHeader from '../Components/PageHeader';
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
 const { Option } = Select;
 
 const ChiTietLopPage = () => {
+  const navigate = useNavigate();
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);
   const [newStudentPhone, setNewStudentPhone] = useState('');
   const [searchValue, setSearchValue] = useState('');
@@ -57,26 +61,12 @@ const ChiTietLopPage = () => {
     {
       title: 'Thao tác', key: 'action', width: 120, align: 'center', render: (_, record) => (
         <Space>
-          <Popconfirm
-            title="Xác nhận xóa"
-            description="Bạn có chắc chắn muốn xóa học sinh này không?"
+          <Popconfirm title="Xác nhận xóa" okText="Xóa" cancelText="Hủy" description="Bạn có chắc chắn muốn xóa học sinh này không?"
             onConfirm={() => handleDeleteStudent(record.key)}
-            okText="Xóa"
-            cancelText="Hủy"
-            okButtonProps={{ danger: true }}
-          >
-            <Button
-              type="text"
-              icon={<DeleteOutlined />}
-              danger
-              size="small"
-            />
+            okButtonProps={{ danger: true }}>
+            <Button type="text" icon={<DeleteOutlined />} danger size="small" />
           </Popconfirm>
-          <Button
-            type="text"
-            icon={<ArrowRightOutlined />}
-            size="small"
-          />
+          <Button type="text" icon={<ArrowRightOutlined />} size="small" />
         </Space>
       )
     }
@@ -91,48 +81,12 @@ const ChiTietLopPage = () => {
   });
 
   return (
-    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: '100vw', height: '100vh', overflow: 'hidden' }}>
-      <Layout style={{ height: '100vh', background: '#f0f2f5' }}>
-        {/* Header */}
-        <Header style={{ background: '#8B4B9C', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Avatar icon={<UserOutlined />} style={{ background: '#fff', color: '#8B4B9C' }} />
-              <Text style={{ color: '#fff', fontSize: '16px', fontWeight: 'bold' }}>
-                Online Exam
-              </Text>
-            </div>
-
-            <div style={{ display: 'flex', gap: '24px', marginLeft: '40px' }}>
-              <Button
-                type="text"
-                style={{
-                  color: '#fff',
-                  background: 'rgba(255,255,255,0.2)',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  borderRadius: '20px',
-                  padding: '4px 16px'
-                }}
-              >
-                LỚP HỌC
-              </Button>
-              <Button type="text" style={{ color: '#fff' }}>MÔN HỌC</Button>
-              <Button type="text" style={{ color: '#fff' }}>THI ONLINE</Button>
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <Button type="text" icon={<BellOutlined />} style={{ color: '#fff' }} />
-            <Avatar icon={<UserOutlined />} style={{ background: '#fff', color: '#8B4B9C' }} />
-          </div>
-        </Header>
-
+    <div className='fixed top-0 left-0 right-0 bottom-0 w-full h-full overflow-hidden'>
+      <Layout className='h-screen' style={{ background: '#f0f2f5' }}>
+        <PageHeader />
         <Layout>
           {/* Sidebar */}
-          <Sider
-            width={280}
-            style={{ background: '#fff', borderRight: '1px solid #f0f0f0', height: 'calc(100vh - 64px)', overflow: 'auto' }}
-          >
+          <Sider width={280} style={{ background: '#fff', borderRight: '1px solid #f0f0f0', height: 'calc(100vh - 64px)', overflow: 'auto' }}>
             <div style={{ padding: '16px' }}>
               <Title level={4} style={{ margin: '0 0 4px 0', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>
                 Lớp Tiếng Nhật cơ bản
@@ -160,10 +114,8 @@ const ChiTietLopPage = () => {
                   Danh sách lớp ▶
                 </Button>
 
-                <Button
-                  type="text"
-                  style={{ width: '100%', textAlign: 'left', padding: '12px 16px', height: 'auto', color: '#333', background: 'transparent', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}
-                >
+                <Button type="text" style={{ width: '100%', textAlign: 'left', padding: '12px 16px', height: 'auto', color: '#333', background: 'transparent', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}
+                  onClick={() => navigate('/dslophocduyet')}>
                   ✓ Chờ duyệt
                 </Button>
               </div>
@@ -171,64 +123,32 @@ const ChiTietLopPage = () => {
           </Sider>
 
           {/* Main Content */}
-          <Content style={{ padding: '24px', background: '#fff', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
+          <Content className='bg-[#f5f5f5]' style={{ padding: '24px', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
             {/* Search and Filter Bar */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', gap: '16px' }}>
               <div style={{ display: 'flex', gap: '12px', flex: 1 }}>
-                <Input
-                  placeholder="Tìm kiếm học sinh"
-                  prefix={<SearchOutlined />}
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  style={{ width: '300px' }}
-                />
-                <Select
-                  placeholder="Sắp xếp"
-                  style={{ width: '150px' }}
-                  value={selectedGender}
-                  onChange={setSelectedGender}
-                  allowClear
-                >
-                  <Option value="">Tất cả</Option>
-                  <Option value="Nam">Nam</Option>
-                  <Option value="Nữ">Nữ</Option>
-                </Select>
+                <Input placeholder="Tìm kiếm học sinh" prefix={<SearchOutlined />} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} style={{ width: '300px' }} />
+                <Select placeholder="Sắp xếp" style={{ width: '150px' }} allowClear value={selectedGender} onChange={setSelectedGender}
+                  options={[
+                    { value: '', label: 'Tất cả' },
+                    { value: 'Nam', label: 'Nam' },
+                    { value: 'Nữ', label: 'Nữ' }
+                  ]} />
               </div>
 
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={() => setIsAddModalVisible(true)}
-                style={{
-                  background: '#8B4B9C',
-                  borderColor: '#8B4B9C'
-                }}
-              >
+              <Button type="primary" icon={<PlusOutlined />} style={{ background: '#8B4B9C', borderColor: '#8B4B9C' }}
+                onClick={() => setIsAddModalVisible(true)}>
                 Thêm học sinh
               </Button>
             </div>
 
             {/* Table */}
-            <Table
-              columns={columns}
-              dataSource={filteredStudents}
-              pagination={{
-                current: 1,
-                pageSize: 10,
-                total: filteredStudents.length,
-                showSizeChanger: false,
-                style: { textAlign: 'center' }
-              }}
-              bordered
-              size="middle"
-              style={{ background: '#fff' }}
-            />
+            <Table size="small" columns={columns} pagination={{ pageSize: 10, }} bordered style={{ background: '#fff' }} dataSource={filteredStudents} />
           </Content>
         </Layout>
 
         {/* Add Student Modal */}
-        <Modal
-          title="THÊM HỌC SINH"
+        <Modal width={400} centered title="THÊM HỌC SINH"
           open={isAddModalVisible}
           onCancel={() => {
             setIsAddModalVisible(false);
@@ -238,29 +158,15 @@ const ChiTietLopPage = () => {
             <Button key="cancel" onClick={() => setIsAddModalVisible(false)}>
               Hủy
             </Button>,
-            <Button
-              key="add"
-              type="primary"
-              onClick={handleAddStudent}
-              style={{
-                background: '#8B4B9C',
-                borderColor: '#8B4B9C'
-              }}
-            >
+            <Button key="add" type="primary" onClick={handleAddStudent} style={{ background: '#8B4B9C', borderColor: '#8B4B9C' }}>
               Thêm học sinh
             </Button>
-          ]}
-          width={400}
-          centered
-        >
+          ]}>
           <div style={{ padding: '16px 0' }}>
             <Text>Nhập SĐT đăng nhập của học sinh<span style={{ color: 'red' }}>*</span></Text>
-            <Input
-              placeholder="Nhập số điện thoại..."
+            <Input placeholder="Nhập số điện thoại..." style={{ marginTop: '8px' }}
               value={newStudentPhone}
-              onChange={(e) => setNewStudentPhone(e.target.value)}
-              style={{ marginTop: '8px' }}
-            />
+              onChange={(e) => setNewStudentPhone(e.target.value)} />
           </div>
         </Modal>
       </Layout>

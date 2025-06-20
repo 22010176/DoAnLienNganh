@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { Layout, Table, Button, Input, Typography, Space, Popconfirm, message, Avatar } from 'antd';
-import { SearchOutlined, UserOutlined, BellOutlined, LikeOutlined, DislikeOutlined } from '@ant-design/icons';
+import { BellOutlined, DislikeOutlined, LikeOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Input, Layout, Space, Table, Typography, message } from 'antd';
+import { Component } from 'react';
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -104,15 +104,7 @@ class DSLopChoDuyetPage extends Component {
 
           <Layout>
             {/* Sidebar */}
-            <Sider
-              width={280}
-              style={{
-                background: '#fff',
-                borderRight: '1px solid #f0f0f0',
-                height: 'calc(100vh - 64px)',
-                overflow: 'auto'
-              }}
-            >
+            <Sider width={280} style={{ background: '#fff', borderRight: '1px solid #f0f0f0', height: 'calc(100vh - 64px)', overflow: 'auto' }}>
               <div style={{ padding: '16px' }}>
                 <Title level={4} style={{ margin: '0 0 4px 0', color: '#333', fontSize: '18px', fontWeight: 'bold' }}>
                   Lớp Tiếng Nhật cơ bản
@@ -131,21 +123,12 @@ class DSLopChoDuyetPage extends Component {
                 </div>
 
                 <div>
-                  <Button
-                    type="text"
-                    style={{
-                      width: '100%', textAlign: 'left', padding: '12px 16px', height: 'auto', color: '#333', background: 'transparent',
-                      borderRadius: '6px', marginBottom: '8px', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px'
-                    }}
-                  >
+                  <Button type="text" style={{ width: '100%', textAlign: 'left', padding: '12px 16px', height: 'auto', color: '#333', background: 'transparent', borderRadius: '6px', marginBottom: '8px', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <UserOutlined />
                     Danh sách lớp
                   </Button>
 
-                  <Button
-                    type="text"
-                    style={{ width: '100%', padding: '12px 16px', height: 'auto', color: '#fff', background: '#8B4B9C', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', borderRadius: '6px' }}
-                  >
+                  <Button type="text" style={{ width: '100%', padding: '12px 16px', height: 'auto', color: '#fff', background: '#8B4B9C', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', borderRadius: '6px' }}>
                     ✓ Chờ duyệt ▶
                   </Button>
                 </div>
@@ -156,13 +139,9 @@ class DSLopChoDuyetPage extends Component {
             <Content style={{ padding: '24px', background: '#fff', overflow: 'auto', height: 'calc(100vh - 64px)' }}>
               {/* Search Bar */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', gap: '16px' }}>
-                <Input
-                  placeholder="Tìm kiếm học sinh"
-                  prefix={<SearchOutlined />}
+                <Input placeholder="Tìm kiếm học sinh" prefix={<SearchOutlined />} style={{ width: '400px' }}
                   value={searchValue}
-                  onChange={this.handleSearchChange}
-                  style={{ width: '400px' }}
-                />
+                  onChange={this.handleSearchChange} />
 
                 <Text type="secondary" style={{ fontSize: '13px' }}>
                   Yêu cầu vào lớp sẽ được hiển thị tại đây có thể sinh viên cần tự đặt tên lớp học từ mã lớp NHTA1

@@ -1,5 +1,5 @@
 import { ArrowRightOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Layout, Modal, Select, Space, Table, Tooltip, Typography } from 'antd';
+import { Button, Form, Input, Layout, Modal, Select, Space, Table, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -7,7 +7,7 @@ import PageHeader from '../Components/PageHeader';
 
 const { Content } = Layout;
 
-function LopHocPage() {
+function MonHocPage() {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -48,9 +48,9 @@ function LopHocPage() {
 
   const columns = [
     { title: 'STT', dataIndex: 'stt', key: 'stt', width: 60, align: 'center', },
-    { title: 'Mã lớp', dataIndex: 'maLop', key: 'maLop', width: 100, align: 'center', },
-    { title: 'Tên lớp', dataIndex: 'tenLop', key: 'tenLop', width: 300, },
-    { title: 'Số học sinh', dataIndex: 'soHocSinh', key: 'soHocSinh', width: 120, align: 'center', },
+    { title: 'Mã môn học', dataIndex: 'maLop', key: 'maLop', width: 100, align: 'center', },
+    { title: 'Tên môn học', dataIndex: 'tenLop', key: 'tenLop', width: 300, },
+    { title: 'Số lượng câu hỏi', dataIndex: 'soHocSinh', key: 'soHocSinh', width: 120, align: 'center', },
     {
       title: 'Thao tác', key: 'action', width: 150, align: 'center', render: () => (
         <Space size="small">
@@ -86,7 +86,7 @@ function LopHocPage() {
                     { value: 'Oldest', label: 'Cũ nhất' }]} />
               </Space>
               <Button type="primary" icon={<PlusOutlined />} onClick={showModal} style={{ backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px' }}>
-                Thêm lớp
+                Thêm môn học
               </Button>
             </div>
 
@@ -95,9 +95,9 @@ function LopHocPage() {
               dataSource={data} />
           </div>
 
-          {/* Modal Thêm Lớp Học */}
-          <Modal width={600} centered okText="Tạo lớp" cancelText="Hủy"
-            title={<h1 className='text-center text-xl font-bold' >THÊM LỚP HỌC</h1>}
+          {/* Modal Thêm Môn Học */}
+          <Modal width={600} centered okText="Tạo môn học" cancelText="Hủy"
+            title={<h1 className='text-center text-xl font-bold' >THÊM MÔN HỌC</h1>}
             open={isModalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
@@ -128,4 +128,4 @@ function LopHocPage() {
   );
 };
 
-export default LopHocPage;
+export default MonHocPage;
