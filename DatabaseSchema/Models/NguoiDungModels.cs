@@ -36,8 +36,8 @@ public class LopHoc
   public string MoTa { get; set; } = null!;
   public DateTime ThoiGianTao { get; set; } = DateTime.UtcNow;
 
-  public int NguoiTaoId { get; set; }
-  public NguoiDung NguoiTao { get; set; } = null!;
+  public int? NguoiTaoId { get; set; }
+  public NguoiDung? NguoiTao { get; set; } = null!;
 
   public List<LopHoc_NguoiDung>? LopHoc_NguoiDung { get; set; }
 }

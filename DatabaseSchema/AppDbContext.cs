@@ -17,14 +17,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     var lopHoc = modelBuilder.Entity<LopHoc>();
     var lopHocNguoiDung = modelBuilder.Entity<LopHoc_NguoiDung>();
 
-    lopHocNguoiDung
-      .HasOne(t => t.LopHoc)
-      .WithMany(t => t.LopHoc_NguoiDung)
-      .HasForeignKey(t => t.LopHocId);
-    lopHocNguoiDung
-      .HasOne(t => t.NguoiDung)
-      .WithMany(t => t.LopHoc_NguoiDung)
-      .HasForeignKey(t => t.NguoiDungId);
+    lopHoc.HasIndex(i => i.MaLopHoc).IsUnique(true);
+    nguoiDung.HasIndex(i => i.SoDienThoai).IsUnique(true);
+    nguoiDung.HasIndex(i => i.Email).IsUnique(true);
+
+    // lopHocNguoiDung
+    //   .HasOne(t => t.LopHoc)
+    //   .WithMany(t => t.LopHoc_NguoiDung)
+    //   .HasForeignKey(t => t.LopHocId);
+    // lopHocNguoiDung
+    //   .HasOne(t => t.NguoiDung)
+    //   .WithMany(t => t.LopHoc_NguoiDung)
+    //   .HasForeignKey(t => t.NguoiDungId);
   }
 }
 

@@ -1,5 +1,6 @@
 import { ArrowRightOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Layout, Modal, Select, Space, Table, Tooltip, Typography } from 'antd';
+import { Button, Form, Input, Layout, message, Modal, Select, Space, Table, Tooltip } from 'antd';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -7,62 +8,125 @@ import PageHeader from '../Components/PageHeader';
 
 const { Content } = Layout;
 
+const LopHocUrl = import.meta.env.VITE_LOPHOC_URL;
+async function GetLopHoc() {
+  const result = await axios.get(LopHocUrl);
+  return result.data;
+}
+async function AddLopHoc({ tenLopHoc, moTa }) {
+  const result = await axios.post(LopHocUrl, { tenLopHoc, moTa });
+  return result.data;
+}
+async function UpdateLopHoc({ id, tenLopHoc, moTa }) {
+  const result = await axios.put(`${LopHocUrl}/${id}`, { tenLopHoc, moTa });
+  return result.data;
+}
+async function DeleteLopHoc(maLopHoc) {
+  const result = await axios.delete(`${LopHocUrl}/${maLopHoc}`);
+  return result.data;
+}
+
+function InputForm({ form }) {
+  return (
+    <Form form={form} layout="vertical" style={{ marginTop: '20px' }}>
+      <Form.Item name="id" hidden>
+      </Form.Item>
+      <Form.Item name="tenLopHoc"
+        label={<span className='font-semibold'>Tên lớp</span>}
+        rules={[
+          { required: true, message: 'Vui lòng nhập tên lớp học!' },
+          { min: 3, message: 'Tên lớp phải có ít nhất 3 ký tự!' }
+        ]}>
+        <Input placeholder="Nhập tên lớp học...." style={{ borderRadius: '6px', height: '40px', fontSize: '14px' }} />
+      </Form.Item>
+
+      <Form.Item name="moTa"
+        label={<span className='font-semibold'>Mô tả</span>}
+        rules={[
+          { required: true, message: 'Vui lòng nhập mô tả về lớp học!' },
+          { min: 10, message: 'Mô tả phải có ít nhất 10 ký tự!' }
+        ]}>
+        <Input.TextArea placeholder="Nhập mô tả về lớp học....." style={{ borderRadius: '6px', fontSize: '14px' }} />
+      </Form.Item>
+    </Form>
+  )
+}
+
 function LopHocPage() {
+  console.log('LopHocUrl:', LopHocUrl);
+
   const navigate = useNavigate();
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
+  const [lopHocData, setLopHocData] = useState([]);
+
+  const [createModel, setCreateModel] = useState(false);
+  const [updateModel, setUpdateModel] = useState(false);
+
+  const [createForm] = Form.useForm();
+  const [updateForm] = Form.useForm();
 
   // Set full width for the root container
   useEffect(() => {
+    GetLopHoc().then(data => {
+      setLopHocData(data.data);
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+    });
   }, []);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+  const handleAdd = () => createForm.validateFields().then(async values => {
+    const result = await AddLopHoc(values);
+    setLopHocData(result.data)
 
-  const handleOk = () => {
-    form.validateFields().then(values => {
-      console.log('Form values:', values);
-      // Xử lý thêm lớp học ở đây
-      form.resetFields();
-      setIsModalVisible(false);
-    }).catch(error => {
-      console.log('Validation failed:', error);
-    });
-  };
+    createForm.resetFields();
+    message.success('Thêm lớp học thành công!');
+    setCreateModel(false);
+  }).catch(error => {
+    console.log('Validation failed:', error);
+  });
 
-  const handleCancel = () => {
-    form.resetFields();
-    setIsModalVisible(false);
-  };
+  const handleUpdate = () => updateForm.validateFields().then(async values => {
+    const result = await UpdateLopHoc(values);
+    setLopHocData(result.data)
 
-  const data = [
-    { key: '1', stt: '1', maLop: 'NHTA1', tenLop: 'Tiếng Nhật cơ bản', soHocSinh: 45 },
-    { key: '2', stt: '2', maLop: 'TNCH2', tenLop: 'Tiếng Nhật chuyên ngành', soHocSinh: 68 },
-    { key: '3', stt: '3', maLop: 'TCNH1', tenLop: 'Tài chính ngân hàng', soHocSinh: 80 },
-    { key: '4', stt: '4', maLop: 'TSQX2', tenLop: 'Tổ hợp xác suất', soHocSinh: 99 },
-    { key: '5', stt: '5', maLop: 'TRR2', tenLop: 'Toán rời rạc', soHocSinh: 64 },
-    { key: '6', stt: '6', maLop: 'ATCS2', tenLop: 'An toàn và bảo mật thông tin', soHocSinh: 89 },
-    { key: '7', stt: '7', maLop: 'CSDL1', tenLop: 'Cơ sở dữ liệu', soHocSinh: 30 },
-  ];
+    updateForm.resetFields();
+    setUpdateModel(false);
+    message.success('Cập nhật lớp học thành công!');
+  }).catch(error => {
+    console.log('Validation failed:', error);
+  });
 
   const columns = [
-    { title: 'STT', dataIndex: 'stt', key: 'stt', width: 60, align: 'center', },
-    { title: 'Mã lớp', dataIndex: 'maLop', key: 'maLop', width: 100, align: 'center', },
-    { title: 'Tên lớp', dataIndex: 'tenLop', key: 'tenLop', width: 300, },
+    { title: 'STT', width: 60, align: 'center', render: (text, record, index) => index + 1 },
+    { title: 'Mã lớp', dataIndex: 'maLopHoc', key: 'maLopHoc', width: 100, align: 'center', },
+    { title: 'Tên lớp', dataIndex: 'tenLopHoc', key: 'tenLopHoc', width: 300, },
+    { title: 'Mô tả', dataIndex: 'moTa', key: 'moTa', width: 300, },
     { title: 'Số học sinh', dataIndex: 'soHocSinh', key: 'soHocSinh', width: 120, align: 'center', },
     {
-      title: 'Thao tác', key: 'action', width: 150, align: 'center', render: () => (
+      title: 'Thao tác', key: 'action', width: 150, align: 'center', render: (_, record) => (
         <Space size="small">
-          <Tooltip title="Chỉnh sửa">
-            <Button type="text" icon={<EditOutlined />} style={{ color: '#1890ff' }} />
-          </Tooltip>
-          <Tooltip title="Xóa">
-            <Button type="text" icon={<DeleteOutlined />} style={{ color: '#ff4d4f' }} />
-          </Tooltip>
-          <Tooltip title="Xem chi tiết">
-            <Button type="text" icon={<ArrowRightOutlined />} style={{ color: '#52c41a' }} onClick={() => navigate('/chitietlophoc')} />
-          </Tooltip>
+          {/* <Tooltip title="Chỉnh sửa"> */}
+          <Button type="text" icon={<EditOutlined />} style={{ color: '#1890ff' }}
+            onClick={() => {
+              updateForm.setFieldsValue({
+                id: record.id,
+                tenLopHoc: record.tenLopHoc,
+                moTa: record.moTa,
+              });
+              setUpdateModel(true);
+            }}
+          />
+          {/* </Tooltip> */}
+          {/* <Tooltip title="Xóa"> */}
+          <Button type="text" icon={<DeleteOutlined />} style={{ color: '#ff4d4f' }}
+            onClick={async () => {
+              const result = await DeleteLopHoc(record.id);
+              setLopHocData(result.data);
+              message.success('Xóa lớp học thành công!');
+            }} />
+          {/* </Tooltip> */}
+          {/* <Tooltip title="Xem chi tiết"> */}
+          <Button type="text" icon={<ArrowRightOutlined />} style={{ color: '#52c41a' }} onClick={() => navigate('/chitietlophoc')} />
+          {/* </Tooltip> */}
         </Space>
       ),
     },
@@ -85,42 +149,42 @@ function LopHocPage() {
                     { value: 'Newest', label: 'Mới nhất' },
                     { value: 'Oldest', label: 'Cũ nhất' }]} />
               </Space>
-              <Button type="primary" icon={<PlusOutlined />} onClick={showModal} style={{ backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px' }}>
+              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px' }}
+                onClick={() => setCreateModel(true)}>
                 Thêm lớp
               </Button>
             </div>
 
             <Table size='small' bordered={false} pagination={{ pageSize: 10 }} scroll={{ x: 800 }}
               columns={columns}
-              dataSource={data} />
+              dataSource={lopHocData} />
           </div>
 
           {/* Modal Thêm Lớp Học */}
           <Modal width={600} centered okText="Tạo lớp" cancelText="Hủy"
             title={<h1 className='text-center text-xl font-bold' >THÊM LỚP HỌC</h1>}
-            open={isModalVisible}
-            onOk={handleOk}
-            onCancel={handleCancel}
+            open={createModel}
+            onOk={handleAdd}
+            onCancel={() => {
+              createForm.resetFields();
+              setCreateModel(false);
+            }}
             okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
             cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
-            <Form form={form} layout="vertical" style={{ marginTop: '20px' }}>
-              <Form.Item name="tenLop"
-                label={<span style={{ fontSize: '14px', fontWeight: '500' }}>Tên lớp</span>}
-                rules={[
-                  { required: true, message: 'Vui lòng nhập tên lớp học!' },
-                  { min: 3, message: 'Tên lớp phải có ít nhất 3 ký tự!' }
-                ]}>
-                <Input placeholder="Nhập tên lớp học...." style={{ borderRadius: '6px', height: '40px', fontSize: '14px' }} />
-              </Form.Item>
-
-              <Form.Item label={<span style={{ fontSize: '14px', fontWeight: '500' }}>Mô tả</span>} name="moTa"
-                rules={[
-                  { required: true, message: 'Vui lòng nhập mô tả về lớp học!' },
-                  { min: 10, message: 'Mô tả phải có ít nhất 10 ký tự!' }
-                ]}>
-                <Input.TextArea placeholder="Nhập mô tả về lớp học....." rows={4} style={{ borderRadius: '6px', fontSize: '14px' }} />
-              </Form.Item>
-            </Form>
+            <InputForm form={createForm} />
+          </Modal>
+          {/* Modal Cập Nhật Lớp Học */}
+          <Modal width={600} centered okText="Lưu" cancelText="Hủy"
+            title={<h1 className='text-center text-xl font-bold' >CẬP NHẬT LỚP HỌC</h1>}
+            open={updateModel}
+            onOk={handleUpdate}
+            onCancel={() => {
+              updateForm.resetFields();
+              setUpdateModel(false);
+            }}
+            okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
+            cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
+            <InputForm form={updateForm} />
           </Modal>
         </Content>
       </Layout>
