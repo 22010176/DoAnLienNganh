@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Utilities;
@@ -20,5 +21,17 @@ public static class AuthenticateUtils
       signingCredentials: creds
     );
     return new JwtSecurityTokenHandler().WriteToken(token);
+  }
+
+  public static string PasswordHashing(string password)
+  {
+    var hasher = new PasswordHasher<object>();
+    return hasher.HashPassword(null, password);
+  }
+
+  public static bool CheckingPassword(string hashed, string password)
+  {
+    var hasher = new PasswordHasher<object>();
+    return hasher.VerifyHashedPassword(null, hashed, password) == PasswordVerificationResult.Success;
   }
 }

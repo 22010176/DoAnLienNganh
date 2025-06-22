@@ -7,63 +7,60 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 
 using DatabaseSchema;
+using Microsoft.AspNetCore.Builder;
 
 namespace Utilities;
 
 public static class AppStartUp
 {
-  public static IServiceCollection InitPostgreDatabase(IServiceCollection services, IConfiguration configuration)
+  public static void InitPostgreDatabase(WebApplicationBuilder builder)
   {
-    services.AddDbContext<AppDbContext>(options =>
-      options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-    return services;
+    builder.Services.AddDbContext<AppDbContext>(options =>
+      options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
   }
 
-  public static IServiceCollection InitCors(IServiceCollection services)
+  public static void InitCors(WebApplicationBuilder builder)
   {
-    services.AddCors(options =>
+    builder.Services.AddCors(options =>
       options.AddDefaultPolicy(builder =>
         builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
-    return services;
   }
 
-  public static IServiceCollection InitSwagger(IServiceCollection services)
+  public static void InitSwagger(WebApplicationBuilder builder)
   {
-    services.AddSwaggerGen();
-    return services;
+    builder.Services.AddSwaggerGen();
   }
 
-  public static IServiceCollection InitController(IServiceCollection services)
+  public static void InitController(WebApplicationBuilder builder)
   {
-    services.AddControllers().AddNewtonsoftJson(options =>
+    builder.Services.AddControllers().AddNewtonsoftJson(options =>
       options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-    return services;
   }
 
-  public static IServiceCollection InitJWTAuth(IServiceCollection services, IConfiguration configuration)
+  public static void InitJWTAuth(WebApplicationBuilder builder)
   {
-
-    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    var configuration = builder.Configuration;
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
       {
+        Console.WriteLine($"{configuration["Jwt:Issuer"]} {configuration["Jwt:Audience"]}");
         options.TokenValidationParameters = new()
         {
-          // ValidateIssuer = true,
-          // ValidIssuer = configuration["Jwt:Issuer"],
-          // ValidateAudience = true,
-          // ValidAudience = configuration["Jwt:Audience"],
-          ValidateLifetime = true,
+          ValidateIssuer = true,
+          ValidIssuer = configuration["Jwt:Issuer"],
+          ValidateAudience = true,
+          ValidAudience = configuration["Jwt:Audience"],
+          // ValidateLifetime = true,
           ValidateIssuerSigningKey = true,
           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
         };
       });
-    return services;
   }
 
-  public static IServiceCollection InitSwaggerWithAuth(IServiceCollection services)
+  public static void InitSwaggerWithAuth(WebApplicationBuilder builder)
   {
-    services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen(options =>
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
     {
       // Cấu hình Swagger sử dụng JWT
       options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -91,6 +88,5 @@ public static class AppStartUp
         }
         });
     });
-    return services;
   }
 }

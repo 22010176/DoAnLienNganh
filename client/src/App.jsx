@@ -4,6 +4,8 @@ import ChiTietLopPage from './Pages/ChiTietLopPage'
 import DSLopChoDuyetPage from './Pages/DSLopChoDuyetPage'
 import LopHocPage from './Pages/LopHocPage'
 import MonHocPage from './Pages/MonHocPage'
+import OnlineExamLogin from './Pages/OnlineExamLogin'
+import AuthLayout from './Layout/AuthLayout'
 
 function App() {
 
@@ -14,6 +16,13 @@ function App() {
         <Route path="/chitietlophoc" element={<ChiTietLopPage />} />
         <Route path="/dslophocduyet" element={<DSLopChoDuyetPage />} />
         <Route path="/monhoc" element={<MonHocPage />} />
+
+        {/* Route for Online Exam Login */}
+
+        <Route element={<AuthLayout />}>
+
+          <Route path="/dang-nhap" element={<OnlineExamLogin />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

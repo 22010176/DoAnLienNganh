@@ -8,6 +8,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
   public DbSet<NguoiDung> NguoiDung { get; set; }
   public DbSet<LopHoc> LopHoc { get; set; }
   public DbSet<LopHoc_NguoiDung> LopHoc_NguoiDung { get; set; }
+  public DbSet<MonHoc> MonHoc { get; set; }
+  public DbSet<DanhSachCauHoi> DanhSachCauHoi { get; set; }
+
+
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
