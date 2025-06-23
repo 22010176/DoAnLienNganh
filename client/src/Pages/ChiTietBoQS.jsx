@@ -28,25 +28,25 @@ export default function ChiTietBoQS() {
         <Row gutter={[16, 16]} className="mb-6">
           <Col xs={12} md={6}>
             <Card className="text-center bg-white shadow-sm">
-              <Title level={1} className="text-5xl font-bold text-purple-700">70</Title>
+              <h1 level={1} className="text-4xl  font-bold text-purple-700">70</h1>
               <Text className="text-gray-600">Tổng số câu hỏi</Text>
             </Card>
           </Col>
           <Col xs={12} md={6}>
             <Card className="text-center bg-white shadow-sm">
-              <Title level={1} className="text-5xl font-bold text-purple-700">30</Title>
+              <h1 level={1} className="text-4xl  font-bold text-purple-700">30</h1>
               <Text className="text-gray-600">Câu hỏi dễ</Text>
             </Card>
           </Col>
           <Col xs={12} md={6}>
             <Card className="text-center bg-white shadow-sm">
-              <Title level={1} className="text-5xl font-bold text-purple-700">30</Title>
+              <h1 level={1} className="text-4xl  font-bold text-purple-700">30</h1>
               <Text className="text-gray-600">Câu hỏi trung bình</Text>
             </Card>
           </Col>
           <Col xs={12} md={6}>
             <Card className="text-center bg-white shadow-sm">
-              <Title level={1} className="text-5xl font-bold text-purple-700">10</Title>
+              <h1 level={1} className="text-4xl  font-bold text-purple-700">10</h1>
               <Text className="text-gray-600">Câu hỏi khó</Text>
             </Card>
           </Col>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Typography, Card, Button, Modal, Input, Space, Row, Col, Statistic, Tooltip } from 'antd';
+import { Layout, Typography, Card, Button, Modal, Input, Space, Row, Col, Statistic, Tooltip, Breadcrumb } from 'antd';
 import { PlusOutlined, FileExcelOutlined, EyeOutlined, EditOutlined, DeleteOutlined, FileTextOutlined, AimOutlined, CalendarOutlined, DownOutlined, CloseOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
@@ -32,7 +32,20 @@ export default function ChiTietMonPage() {
             borderRadius: '8px',
             marginBottom: '24px'
           }}>
-            <Text style={{ color: '#374151', fontSize: '16px' }}>Môn học Toán rời rạc</Text>
+            {/* <Text style={{ color: '#374151', fontSize: '16px' }}> */}
+            {/* Môn học Toán rời rạc</Text> */}
+            <Breadcrumb
+              separator=">"
+              items={[
+                {
+                  title: 'Môn học',
+                },
+                {
+                  title: 'Toán rời rạc',
+                  href: '',
+                }
+              ]}
+            />
             {/* Muốn hiển thị theo kiểu Môn học > Toán rời rạc */}
           </Card>
 
@@ -43,6 +56,8 @@ export default function ChiTietMonPage() {
           <Row gutter={[16, 16]} style={{ marginBottom: '32px' }}>
             <Col xs={24} sm={12} md={6}>
               <Card style={{ textAlign: 'center', borderRadius: '8px' }}>
+                {/* <p className='text-[#7c3aed] text-2xl font-bold'>196</p>
+                <p className='text-[#6b7280]'>Tổng số câu hỏi</p> */}
                 <Statistic
                   title="Tổng số câu hỏi"
                   value={196}
