@@ -44,16 +44,16 @@ public static class AppStartUp
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
       {
-        Console.WriteLine($"{configuration["Jwt:Issuer"]} {configuration["Jwt:Audience"]}");
+        var key = configuration["Jwt:Key"];
         options.TokenValidationParameters = new()
         {
           ValidateIssuer = true,
-          ValidIssuer = configuration["Jwt:Issuer"],
-          ValidateAudience = true,
-          ValidAudience = configuration["Jwt:Audience"],
           ValidateLifetime = true,
           ValidateIssuerSigningKey = true,
-          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
+          ValidateAudience = true,
+          ValidIssuer = configuration["Jwt:Issuer"],
+          ValidAudience = configuration["Jwt:Audience"],
+          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!.PadRight(32)))
         };
       });
   }

@@ -6,7 +6,7 @@ using DatabaseSchema;
 namespace UserService.Controllers;
 
 [ApiController]
-// [Authorize]
+[Authorize]
 [Route("tai-khoan")]
 public class NguoiDungController(AppDbContext context) : ControllerBase
 {

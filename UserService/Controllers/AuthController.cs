@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DatabaseSchema;
 using DatabaseSchema.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Utilities;
@@ -9,38 +11,53 @@ namespace UserService.Controllers;
 
 [ApiController]
 [Route("/auth")]
-public class AuthController(AppDbContext dbContext) : ControllerBase
+public class AuthController(AppDbContext dbContext, IConfiguration configuration) : ControllerBase
 {
   readonly AppDbContext dbContext = dbContext;
+  readonly IConfiguration configuration = configuration;
 
-  async Task CheckLoginInput(LoginInput input, LoaiNguoiDung loaiNguoiDung)
+  async Task<NguoiDung> CheckLoginInput(LoginInput input, LoaiNguoiDung loaiNguoiDung)
   {
     if (string.IsNullOrEmpty(input.MatKhau)) throw new Exception("Mật khẩu không được để trống!");
-    if (string.IsNullOrEmpty(input.Email) && string.IsNullOrEmpty(input.SoDienThoai)) throw new Exception("Phải nhập email hoặc số điện thoại!");
+    bool isEmailEmpty = string.IsNullOrEmpty(input.Email);
+    bool isSoDienThoaiEmpty = string.IsNullOrEmpty(input.SoDienThoai);
+    if (isEmailEmpty && isSoDienThoaiEmpty) throw new Exception("Phải nhập email hoặc số điện thoại!");
 
-    NguoiDung? nguoiDung = await dbContext.NguoiDung.FirstOrDefaultAsync(i => i.Email == input.Email || i.SoDienThoai == input.SoDienThoai);
+    NguoiDung? nguoiDung = await dbContext.NguoiDung.FirstOrDefaultAsync(i => (!isEmailEmpty && i.Email == input.Email) || (!isSoDienThoaiEmpty && i.SoDienThoai == input.SoDienThoai));
     if (nguoiDung == null) throw new Exception("Thông tin cung cấp không hợp lệ!");
     if (nguoiDung.LoaiNguoiDung != loaiNguoiDung) throw new Exception("Loại người dùng không được hỗ trợ!");
+
+    return nguoiDung;
   }
 
-  [HttpGet]
-  public ActionResult Get()
+  [HttpPost("dang-nhap")]
+  public async Task<ActionResult> Login(LoginInput input)
   {
-    return Ok(dbContext.NguoiDung.ToList());
-  }
+    NguoiDung nguoiDung = await CheckLoginInput(input, input.LoaiNguoiDung);
+    if (!AuthenticateUtils.CheckingPassword(nguoiDung.MatKhauBam, input.MatKhau!)) return Unauthorized(new
+    {
+      Message = "Không hợp lệ!",
+      Success = false,
+      Data = "",
+      input,
+      nguoiDung
+    });
 
-  [HttpPost("giang-vien/dang-nhap")]
-  public async Task<ActionResult> LoginGiangVien(LoginInput input)
-  {
-    await CheckLoginInput(input, LoaiNguoiDung.GiaoVien);
-    return Ok();
-  }
-
-  [HttpPost("hoc-sinh/dang-nhap")]
-  public async Task<ActionResult> LoginHocSinhAsync(LoginInput input)
-  {
-    await CheckLoginInput(input, LoaiNguoiDung.HocSinh);
-    return Ok();
+    return Ok(new
+    {
+      Message = "Đăng nhập thành công!",
+      Success = true,
+      Data = AuthenticateUtils.GenerateToken(
+        key: configuration["Jwt:Key"]!,
+        issuer: configuration["Jwt:Issuer"]!,
+        audience: configuration["Jwt:Audience"]!,
+        expireTime: int.Parse(configuration["Jwt:ExpireDays"]!),
+        claims: [
+          new Claim(ClaimTypes.UserData, nguoiDung.Id.ToString()),
+          new Claim(ClaimTypes.Role, nguoiDung.LoaiNguoiDung.ToString())
+        ]
+      )
+    });
   }
 
   [HttpPost("dang-ky")]
@@ -73,16 +90,11 @@ public class AuthController(AppDbContext dbContext) : ControllerBase
       Success = true
     });
   }
-
-  [HttpDelete("dang-xuat")]
-  public ActionResult Logout()
-  {
-    return Ok();
-  }
 }
 
 public record LoginInput
 {
+  public LoaiNguoiDung LoaiNguoiDung { get; set; }
   public string? Email { get; set; }
   public string? SoDienThoai { get; set; }
   public string? MatKhau { get; set; }

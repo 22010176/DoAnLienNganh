@@ -123,15 +123,6 @@ const OnlineExamRegister = () => {
           <Input.Password prefix={<LockOutlined className="text-gray-400" />} placeholder="Nhập mật khẩu" />
         </Form.Item>
 
-        <div className="flex items-center justify-between mb-5">
-          <Checkbox checked={rememberPassword} onChange={(e) => setRememberPassword(e.target.checked)}>
-            Nhớ mật khẩu
-          </Checkbox>
-          <Link href="#" className="text-blue-600 hover:text-blue-800 text-sm">
-            Bạn quên mật khẩu?
-          </Link>
-        </div>
-
         <Form.Item>
           <Button loading={loading} type="primary" htmlType="submit" className="w-full border-0 text-lg font-semibold rounded-lg">
             Đăng ký

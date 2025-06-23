@@ -1,16 +1,49 @@
 import { GoogleOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, Select } from 'antd';
+import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
 const { Option } = Select;
 
+
+async function DangNhapNguoiDung({ loaiNguoiDung, email, soDienThoai, matKhau, }) {
+  const result = await axios.post(`${import.meta.env.VITE_AUTH_URL}/dang-nhap`, {
+    loaiNguoiDung, email, soDienThoai, matKhau,
+  });
+  return result.data;
+}
+
+/*
+
+{
+  
+  
+  
+  
+}
+ */
 const OnlineExamLogin = () => {
   const [form] = Form.useForm();
   const [rememberPassword, setRememberPassword] = useState(false);
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log('Login form values:', values);
+    const input = {
+      loaiNguoiDung: values.loaiNguoiDung,
+      email: values.email,
+      soDienThoai: values.email, // Assuming email is used as phone number
+      matKhau: values.matKhau,
+    }
+    const result = await DangNhapNguoiDung(input);
+    if (result) {
+      console.log('Login successful:', result);
+      // Handle successful login, e.g., redirect to dashboard
+      form.resetFields();
+    } else {
+      console.error('Login failed');
+      // Handle login failure, e.g., show error message
+    }
   };
 
   return (
@@ -22,24 +55,26 @@ const OnlineExamLogin = () => {
       </div>
 
       <Form form={form} className="space-y-2" name="login" onFinish={onFinish} layout="vertical" >
-        <Form.Item label="Chọn vai trò của bạn" name="role" rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}>
-          <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />}
-            options={[
-              { value: 'student', label: 'Học sinh' },
-              { value: 'teacher', label: 'Giáo viên' },
-              { value: 'admin', label: 'Quản trí viên' }]} />
+        <Form.Item label="Chọn vai trò của bạn" name="loaiNguoiDung" rules={[
+          { required: true, message: 'Vui lòng chọn vai trò!' }
+        ]}>
+          <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />} options={[
+            { value: 0, label: 'Học sinh' },
+            { value: 1, label: 'Giáo viên' },
+            { value: 2, label: 'Quản trị viên' }]} />
         </Form.Item>
 
         <Form.Item label="SĐT hoặc Gmail đăng nhập" name="email"
           rules={[
             { required: true, message: 'Vui lòng nhập email!' },
-            { type: 'email', message: 'Email không hợp lệ!' }
+            // { type: 'email', message: 'Email không hợp lệ!' }
           ]}>
           <Input prefix={<MailOutlined className="text-gray-400" />} placeholder="Nhập email của bạn" />
         </Form.Item>
 
-        <Form.Item label="Mật khẩu" name="password"
-          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}>
+        <Form.Item label="Mật khẩu" name="matKhau" rules={[
+          { required: true, message: 'Vui lòng nhập mật khẩu!' }
+        ]}>
           <Input.Password prefix={<LockOutlined className="text-gray-400" />} placeholder="Nhập mật khẩu" />
         </Form.Item>
 

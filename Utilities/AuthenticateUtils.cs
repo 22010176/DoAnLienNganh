@@ -10,15 +10,17 @@ public static class AuthenticateUtils
 {
   public static string GenerateToken(string key, string issuer, string audience, int expireTime, List<Claim> claims)
   {
-    var _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!));
-    var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
+    var creds = new SigningCredentials(
+      new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!.PadRight(32))),
+      SecurityAlgorithms.HmacSha256);
 
+    Console.WriteLine($"{key} {issuer} {audience} {expireTime}");
     var token = new JwtSecurityToken(
       issuer: issuer,
       audience: audience,
-      claims: claims,
-      expires: DateTime.UtcNow.AddMinutes(expireTime),
-      signingCredentials: creds
+      expires: DateTime.Now.AddDays(expireTime),
+      signingCredentials: creds,
+      claims: claims
     );
     return new JwtSecurityTokenHandler().WriteToken(token);
   }
