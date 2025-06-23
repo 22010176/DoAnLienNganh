@@ -1,151 +1,156 @@
-import React, { useState } from 'react';
-import { Input, Button, Select, Checkbox, Form } from 'antd';
-import { GoogleOutlined, UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { GoogleOutlined, LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input, message, Radio, Select } from 'antd';
+import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router';
+import axios from 'axios';
 
 const { Option } = Select;
+/*
+{
+  "": 2,
+  "": "33333",
+  "": 1,
+  "": "2213123@gmail.com",
+  "": "333312314",
+  "": "123",
+  "": "123"
+}
+   */
+async function DangKyNguoiDung({ loaiNguoiDung, hoTen, gioiTinh, email, soDienThoai, matKhau, }) {
+  const result = await axios.post(`${import.meta.env.VITE_AUTH_URL}/dang-ky`, {
+    loaiNguoiDung, hoTen, gioiTinh, email, soDienThoai, matKhau,
+  });
+  return result;
+}
 
-const OnlineExamLogin = () => {
+const OnlineExamRegister = () => {
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);
 
-  const onFinish = (values) => {
-    console.log('Login form values:', values);
+  const onFinish = async (values) => {
+    try {
+      setLoading(true);
+      await DangKyNguoiDung({
+        loaiNguoiDung: values.loaiNguoiDung,
+        hoTen: values.hoTen,
+        gioiTinh: values.gioiTinh,
+        email: values.email,
+        soDienThoai: values.soDienThoai,
+        matKhau: values.matKhau,
+      });
+      setLoading(false);
+      message.success('Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.');
+      form.resetFields();
+    } catch {
+      setLoading(false);
+      message.error('Đăng ký không thành công. Vui lòng thử lại sau!');
+      return;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl flex bg-white rounded-2xl shadow-2xl overflow-hidden">
-        <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-purple-100 to-blue-100 items-center justify-center p-12">
-          <div className="relative">
-            <div className="relative w-96 h-96 bg-gradient-to-br from-purple-200 to-blue-200 rounded-full flex items-center justify-center">
-              <div className="relative">
-                <div className="w-64 h-40 bg-slate-800 rounded-lg transform -rotate-12 shadow-xl">
-                  <div className="w-full h-6 bg-slate-700 rounded-t-lg flex items-center px-3 space-x-1">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                  </div>
-                  <div className="p-4 bg-white rounded-b-lg h-32">
-                    <div className="grid grid-cols-3 gap-2 h-full">
-                      <div className="bg-purple-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-purple-500 rounded"></div>
-                      </div>
-                      <div className="bg-blue-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-blue-500 rounded"></div>
-                      </div>
-                      <div className="bg-green-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-green-500 rounded"></div>
-                      </div>
-                      <div className="bg-yellow-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-                      </div>
-                      <div className="bg-pink-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-pink-500 rounded"></div>
-                      </div>
-                      <div className="bg-indigo-100 rounded flex items-center justify-center">
-                        <div className="w-4 h-4 bg-indigo-500 rounded"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -bottom-8 -left-8">
-                  <div className="w-16 h-16 bg-orange-400 rounded-full"></div>
-                  <div className="w-20 h-12 bg-orange-500 rounded-lg -mt-2"></div>
-                </div>
-              </div>
-
-              <div className="absolute top-8 right-8 w-12 h-12 bg-purple-300 rounded-lg transform rotate-12"></div>
-              <div className="absolute bottom-12 left-8 w-8 h-8 bg-blue-300 rounded-full"></div>
-              <div className="absolute top-16 left-12 w-6 h-6 bg-yellow-300 rounded"></div>
-
-              <div className="absolute -top-4 -left-8 w-12 h-8 bg-slate-800 rounded transform -rotate-12">
-                <div className="w-3 h-3 bg-red-500 rounded-full absolute -top-1 -right-1"></div>
-              </div>
-
-              <div className="absolute bottom-8 right-8">
-                <div className="w-12 h-2 bg-blue-600 rounded mb-1"></div>
-                <div className="w-12 h-2 bg-purple-600 rounded mb-1"></div>
-                <div className="w-12 h-2 bg-green-600 rounded"></div>
-              </div>
-
-              <div className="absolute top-4 right-16 w-10 h-10 bg-white rounded-full border-4 border-purple-300 flex items-center justify-center">
-                <div className="w-1 h-3 bg-purple-600 rounded absolute"></div>
-                <div className="w-1 h-2 bg-purple-400 rounded absolute transform rotate-90"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Right side - Login form */}
-        <div className="w-full lg:w-1/2 p-8 lg:p-12">
-          <div className="max-w-md mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-xl font-semibold text-gray-700 mb-6">
-                HỆ THỐNG THI TRẮC NGHIỆM TRỰC TUYẾN
-              </h2>
-            </div>
-
-            <Form form={form} className="space-y-4" name="login" onFinish={onFinish} layout="vertical" size="large">
-              <Form.Item label="Chọn vai trò của bạn" name="role" rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}>
-                <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />}>
-                  <Option value="student">Học sinh</Option>
-                  <Option value="teacher">Giáo viên</Option>
-                  <Option value="admin">Quản trí viên</Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item label="SĐT hoặc Gmail đăng nhập" name="email"
-                rules={[
-                  { required: true, message: 'Vui lòng nhập email!' },
-                  { type: 'email', message: 'Email không hợp lệ!' }
-                ]}>
-                <Input prefix={<MailOutlined className="text-gray-400" />} placeholder="Nhập email của bạn" />
-              </Form.Item>
-
-              <Form.Item label="Mật khẩu" name="password"
-                rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}>
-                <Input.Password prefix={<LockOutlined className="text-gray-400" />} placeholder="Nhập mật khẩu" />
-              </Form.Item>
-
-              <div className="flex items-center justify-between mb-6">
-                <Checkbox checked={rememberPassword} onChange={(e) => setRememberPassword(e.target.checked)}>
-                  Nhớ mật khẩu
-                </Checkbox>
-                <Link href="#" className="text-blue-600 hover:text-blue-800 text-sm">
-                  Bạn quên mật khẩu?
-                </Link>
-              </div>
-
-              <Form.Item>
-                <Button type="primary" htmlType="submit" className="w-full bg-blue-900 hover:bg-blue-800 border-0 text-lg font-semibold rounded-lg">
-                  Đăng nhập
-                </Button>
-              </Form.Item>
-
-              <div className="text-center">
-                <span className="text-gray-500">Hoặc:</span>
-              </div>
-
-              <Button
-                icon={<GoogleOutlined />}
-                className="w-full h-12 border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 text-lg font-medium rounded-lg flex items-center justify-center">
-                Tiếp tục với Google
-              </Button>
-
-              <div className="text-center mt-6">
-                <span className="text-gray-600">Chưa có tài khoản? </span>
-                <Link href="#" className="text-blue-600 hover:text-blue-800 font-semibold">
-                  Đăng ký ngay
-                </Link>
-              </div>
-            </Form>
-          </div>
-        </div>
+    <div className="mx-auto">
+      <div className="text-center mb-2">
+        <h2 className="text-xl font-semibold text-gray-700 mb-2 text-nowrap">
+          HỆ THỐNG THI TRẮC NGHIỆM TRỰC TUYẾN
+        </h2>
       </div>
+
+      <Form form={form} name="login" onFinish={onFinish} layout="vertical" >
+        <Form.Item label="Chọn vai trò của bạn" name="loaiNguoiDung" rules={[
+          { required: true, message: 'Vui lòng chọn vai trò!' }
+        ]}>
+          <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />} options={[
+            { value: 0, label: 'Học sinh' },
+            { value: 1, label: 'Giáo viên' },
+            { value: 2, label: 'Quản trị viên' }]} />
+        </Form.Item>
+
+        <Form.Item label="Họ và tên" name="hoTen"
+          rules={[
+            { required: true, message: 'Vui lòng nhập họ và tên!' },
+            { min: 3, message: 'Họ và tên phải có ít nhất 3 ký tự!' }
+          ]}>
+          <Input prefix={<MailOutlined className="text-gray-400" />} placeholder="Nhập họ và tên của bạn" />
+        </Form.Item>
+        <Form.Item label="Giới tính" name="gioiTinh"
+          rules={[
+            { required: true, message: 'Vui lòng chọn giới tính!' }
+          ]}>
+          <Radio.Group placeholder="Chọn giới tính" suffixIcon={<UserOutlined />}
+            options={[
+              { value: 0, label: 'Nam' },
+              { value: 1, label: 'Nữ' },
+              { value: 2, label: 'Khác' }]} />
+        </Form.Item>
+
+        <Form.Item label="Email" name="email"
+          rules={[
+            { required: true, message: 'Vui lòng nhập email!' },
+            { type: 'email', message: 'Email không hợp lệ!' }
+          ]}>
+          <Input prefix={<MailOutlined className="text-gray-400" />} placeholder="Nhập email của bạn" />
+        </Form.Item>
+
+        <Form.Item label="Số điện thoại" name="soDienThoai"
+          rules={[
+            { required: true, message: 'Vui lòng nhập số điện thoại!' },
+            { pattern: /^\+?[0-9]{1,4}?[-. (]?[0-9]{2,4}?[-. )]?[0-9]{3,4}?[-. ]?[0-9]{3,4}$/, message: 'Số điện thoại không hợp lệ!' }
+          ]}>
+          <Input prefix={<PhoneOutlined className="text-gray-400" />} placeholder="Nhập số điện thoại của bạn" />
+        </Form.Item>
+
+        <Form.Item label="Mật khẩu" name="matKhau"
+          rules={[
+            { required: true, message: 'Vui lòng nhập mật khẩu!' }
+          ]}>
+          <Input.Password prefix={<LockOutlined className="text-gray-400" />} placeholder="Nhập mật khẩu" />
+        </Form.Item>
+
+        <Form.Item label="Xác nhận mật khẩu" name="confirmMatKhau" rules={[
+          { required: true, message: 'Vui lòng nhập mật khẩu!' },
+          ({ getFieldValue }) => ({
+            warningOnly: true,
+            validator(_, value) {
+              if (!value || getFieldValue('matKhau') === value) return Promise.resolve();
+              return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+            },
+          }),
+        ]}>
+          <Input.Password prefix={<LockOutlined className="text-gray-400" />} placeholder="Nhập mật khẩu" />
+        </Form.Item>
+
+        <div className="flex items-center justify-between mb-5">
+          <Checkbox checked={rememberPassword} onChange={(e) => setRememberPassword(e.target.checked)}>
+            Nhớ mật khẩu
+          </Checkbox>
+          <Link href="#" className="text-blue-600 hover:text-blue-800 text-sm">
+            Bạn quên mật khẩu?
+          </Link>
+        </div>
+
+        <Form.Item>
+          <Button loading={loading} type="primary" htmlType="submit" className="w-full border-0 text-lg font-semibold rounded-lg">
+            Đăng ký
+          </Button>
+        </Form.Item>
+
+        <div className="text-left mb-2">
+          <Link to="/dang-nhap" className='font-semibold'>
+            <FontAwesomeIcon icon={faArrowLeft} className='mr-2' />
+            Quay lại đăng nhập
+          </Link>
+        </div>
+
+        <Button className="w-full border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 text-lg font-medium rounded-lg flex items-center justify-center" icon={<GoogleOutlined />}>
+          Tiếp tục với Google
+        </Button>
+      </Form>
     </div>
   );
 };
 
-export default OnlineExamLogin;
+export default OnlineExamRegister;

@@ -6,6 +6,7 @@ import LopHocPage from './Pages/LopHocPage'
 import MonHocPage from './Pages/MonHocPage'
 import OnlineExamLogin from './Pages/OnlineExamLogin'
 import AuthLayout from './Layout/AuthLayout'
+import OnlineExamRegister from './Pages/OnlineExamRegister'
 
 function App() {
 
@@ -20,8 +21,8 @@ function App() {
         {/* Route for Online Exam Login */}
 
         <Route element={<AuthLayout />}>
-
           <Route path="/dang-nhap" element={<OnlineExamLogin />} />
+          <Route path="/dang-ky" element={<OnlineExamRegister />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -28,6 +28,7 @@ public static class AppStartUp
 
   public static void InitSwagger(WebApplicationBuilder builder)
   {
+    builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
   }
 
@@ -50,7 +51,7 @@ public static class AppStartUp
           ValidIssuer = configuration["Jwt:Issuer"],
           ValidateAudience = true,
           ValidAudience = configuration["Jwt:Audience"],
-          // ValidateLifetime = true,
+          ValidateLifetime = true,
           ValidateIssuerSigningKey = true,
           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]!))
         };
@@ -74,19 +75,19 @@ public static class AppStartUp
       });
 
       options.AddSecurityRequirement(new OpenApiSecurityRequirement
+      {
         {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
+          new OpenApiSecurityScheme
+          {
+              Reference = new OpenApiReference
+              {
+                  Type = ReferenceType.SecurityScheme,
+                  Id = "Bearer"
+              }
+          },
+          Array.Empty<string>()
         }
-        });
+      });
     });
   }
 }

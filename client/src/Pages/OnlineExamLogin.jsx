@@ -21,13 +21,13 @@ const OnlineExamLogin = () => {
         </h2>
       </div>
 
-      <Form form={form} className="space-y-2" name="login" onFinish={onFinish} layout="vertical" size="large">
+      <Form form={form} className="space-y-2" name="login" onFinish={onFinish} layout="vertical" >
         <Form.Item label="Chọn vai trò của bạn" name="role" rules={[{ required: true, message: 'Vui lòng chọn vai trò!' }]}>
-          <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />}>
-            <Option value="student">Học sinh</Option>
-            <Option value="teacher">Giáo viên</Option>
-            <Option value="admin">Quản trí viên</Option>
-          </Select>
+          <Select placeholder="Chọn vai trò" suffixIcon={<UserOutlined />}
+            options={[
+              { value: 'student', label: 'Học sinh' },
+              { value: 'teacher', label: 'Giáo viên' },
+              { value: 'admin', label: 'Quản trí viên' }]} />
         </Form.Item>
 
         <Form.Item label="SĐT hoặc Gmail đăng nhập" name="email"
@@ -53,13 +53,13 @@ const OnlineExamLogin = () => {
         </div>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="w-full  bg-blue-900 hover:bg-blue-800 border-0 text-lg font-semibold rounded-lg">
+          <Button type="primary" htmlType="submit" className="w-full border-0 text-lg font-semibold rounded-lg">
             Đăng nhập
           </Button>
         </Form.Item>
 
         <div className="text-center">
-          <span className="text-gray-500">Hoặc:</span>
+          <span className="text-gray-500">Hoặc</span>
         </div>
 
         <Button
@@ -70,12 +70,12 @@ const OnlineExamLogin = () => {
 
         <div className="text-center mt-6">
           <span className="text-gray-600">Chưa có tài khoản? </span>
-          <Link className="text-blue-600 hover:text-blue-800 font-semibold">
+          <Link to="/dang-ky" className="text-blue-600 hover:text-blue-800 font-semibold">
             Đăng ký ngay
           </Link>
         </div>
       </Form>
-    </div>
+    </div >
   );
 };
 
