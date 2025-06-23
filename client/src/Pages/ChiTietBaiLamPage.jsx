@@ -82,8 +82,7 @@ export default function ChiTietBaiLamPage() {
         width="90vw"
         style={{ maxWidth: '1200px', top: '20px' }}
         bodyStyle={{ maxHeight: '80vh', overflowY: 'auto', padding: '16px' }}
-        closeIcon={<CloseOutlined />}
-      >
+        closeIcon={<CloseOutlined />}>
         <Card
           style={{
             background: '#e6f4ff',
