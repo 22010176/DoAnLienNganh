@@ -1,5 +1,5 @@
 import { GoogleOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, Select } from 'antd';
+import { Button, Checkbox, Form, Input, message, Select } from 'antd';
 import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router';
@@ -39,6 +39,8 @@ const OnlineExamLogin = () => {
     if (result) {
       console.log('Login successful:', result);
       // Handle successful login, e.g., redirect to dashboard
+      message.success('Đăng nhập thành công!');
+      localStorage.setItem('token', JSON.stringify(result.data));
       form.resetFields();
     } else {
       console.error('Login failed');

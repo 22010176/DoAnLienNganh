@@ -9,27 +9,30 @@ import AuthLayout from './Layout/AuthLayout'
 import OnlineExamRegister from './Pages/OnlineExamRegister'
 import ChiTietMonPage from './Pages/ChiTietMonPage'
 import ChiTietBoQS from './Pages/ChiTietBoQS'
+import { PageContextProvider } from './Components/PageContext'
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/lophoc" element={<LopHocPage />} />
-        <Route path="/chitietlophoc" element={<ChiTietLopPage />} />
-        <Route path="/dslophocduyet" element={<DSLopChoDuyetPage />} />
-        <Route path="/monhoc" element={<MonHocPage />} />
-        <Route path="/chitietmonhoc" element={<ChiTietMonPage />} />
-        <Route path="/chitietbocauhoi" element={<ChiTietBoQS />} />
+    <PageContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/lophoc" element={<LopHocPage />} />
+          <Route path="/chitietlophoc" element={<ChiTietLopPage />} />
+          <Route path="/dslophocduyet" element={<DSLopChoDuyetPage />} />
+          <Route path="/monhoc" element={<MonHocPage />} />
+          <Route path="/chitietmonhoc" element={<ChiTietMonPage />} />
+          <Route path="/chitietbocauhoi" element={<ChiTietBoQS />} />
 
-        {/* Route for Online Exam Login */}
+          {/* Route for Online Exam Login */}
 
-        <Route element={<AuthLayout />}>
-          <Route path="/dang-nhap" element={<OnlineExamLogin />} />
-          <Route path="/dang-ky" element={<OnlineExamRegister />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route element={<AuthLayout />}>
+            <Route path="/dang-nhap" element={<OnlineExamLogin />} />
+            <Route path="/dang-ky" element={<OnlineExamRegister />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </PageContextProvider>
   )
 }
 
