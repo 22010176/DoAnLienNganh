@@ -133,62 +133,56 @@ function LopHocPage() {
   ];
 
   return (
-    <div className='w-screen h-screen overflow-hidden' >
-      <Layout className='size-full bg-[#f5f5f5]' >
-        <PageHeader />
+    <>
+      <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', width: '100%', overflowX: 'auto' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+          <Space size="middle" wrap>
+            <Input placeholder="Tìm kiếm theo mã lớp hoặc tên lớp" prefix={<SearchOutlined />} style={{ width: '100%', minWidth: '250px', maxWidth: '350px' }} />
+            <Select className='w-40' placeholder="Sắp xếp theo" suffixIcon={<span>▼</span>}
+              options={[
+                { value: 'Asce', label: 'Từ A đến Z' },
+                { value: 'Desc', label: 'Từ Z đến A' },
+                { value: 'Newest', label: 'Mới nhất' },
+                { value: 'Oldest', label: 'Cũ nhất' }]} />
+          </Space>
+          <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px' }}
+            onClick={() => setCreateModel(true)}>
+            Thêm lớp
+          </Button>
+        </div>
 
-        <Content className='size-full bg-[#f5f5f5] p-[16px]' style={{ padding: '16px', backgroundColor: '#f5f5f5', width: '100%' }}>
-          <div style={{ backgroundColor: 'white', padding: '16px', borderRadius: '8px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)', width: '100%', overflowX: 'auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
-              <Space size="middle" wrap>
-                <Input placeholder="Tìm kiếm theo mã lớp hoặc tên lớp" prefix={<SearchOutlined />} style={{ width: '100%', minWidth: '250px', maxWidth: '350px' }} />
-                <Select className='w-40' placeholder="Sắp xếp theo" suffixIcon={<span>▼</span>}
-                  options={[
-                    { value: 'Asce', label: 'Từ A đến Z' },
-                    { value: 'Desc', label: 'Từ Z đến A' },
-                    { value: 'Newest', label: 'Mới nhất' },
-                    { value: 'Oldest', label: 'Cũ nhất' }]} />
-              </Space>
-              <Button type="primary" icon={<PlusOutlined />} style={{ backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px' }}
-                onClick={() => setCreateModel(true)}>
-                Thêm lớp
-              </Button>
-            </div>
+        <Table size='small' bordered={false} pagination={{ pageSize: 10 }} scroll={{ x: 800 }}
+          columns={columns}
+          dataSource={lopHocData} />
+      </div>
 
-            <Table size='small' bordered={false} pagination={{ pageSize: 10 }} scroll={{ x: 800 }}
-              columns={columns}
-              dataSource={lopHocData} />
-          </div>
-
-          {/* Modal Thêm Lớp Học */}
-          <Modal width={600} centered okText="Tạo lớp" cancelText="Hủy"
-            title={<h1 className='text-center text-xl font-bold' >THÊM LỚP HỌC</h1>}
-            open={createModel}
-            onOk={handleAdd}
-            onCancel={() => {
-              createForm.resetFields();
-              setCreateModel(false);
-            }}
-            okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
-            cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
-            <InputForm form={createForm} />
-          </Modal>
-          {/* Modal Cập Nhật Lớp Học */}
-          <Modal width={600} centered okText="Lưu" cancelText="Hủy"
-            title={<h1 className='text-center text-xl font-bold' >CẬP NHẬT LỚP HỌC</h1>}
-            open={updateModel}
-            onOk={handleUpdate}
-            onCancel={() => {
-              updateForm.resetFields();
-              setUpdateModel(false);
-            }}
-            okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
-            cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
-            <InputForm form={updateForm} />
-          </Modal>
-        </Content>
-      </Layout>
-    </div>
+      {/* Modal Thêm Lớp Học */}
+      <Modal width={600} centered okText="Tạo lớp" cancelText="Hủy"
+        title={<h1 className='text-center text-xl font-bold' >THÊM LỚP HỌC</h1>}
+        open={createModel}
+        onOk={handleAdd}
+        onCancel={() => {
+          createForm.resetFields();
+          setCreateModel(false);
+        }}
+        okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
+        cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
+        <InputForm form={createForm} />
+      </Modal>
+      {/* Modal Cập Nhật Lớp Học */}
+      <Modal width={600} centered okText="Lưu" cancelText="Hủy"
+        title={<h1 className='text-center text-xl font-bold' >CẬP NHẬT LỚP HỌC</h1>}
+        open={updateModel}
+        onOk={handleUpdate}
+        onCancel={() => {
+          updateForm.resetFields();
+          setUpdateModel(false);
+        }}
+        okButtonProps={{ style: { backgroundColor: '#7b4397', borderColor: '#7b4397', borderRadius: '6px', fontWeight: '500' } }}
+        cancelButtonProps={{ style: { borderRadius: '6px', fontWeight: '500' } }}>
+        <InputForm form={updateForm} />
+      </Modal>
+    </>
   );
 };
 

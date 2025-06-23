@@ -1,28 +1,19 @@
 import { GoogleOutlined, LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message, Select } from 'antd';
-import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router';
 
-const { Option } = Select;
+
+import { DangNhapNguoiDung } from '@/Api/nguoiDung';
+
+// async function DangNhapNguoiDung({ loaiNguoiDung, email, soDienThoai, matKhau, }) {
+//   const result = await axios.post(`${import.meta.env.VITE_AUTH_URL}/dang-nhap`, {
+//     loaiNguoiDung, email, soDienThoai, matKhau,
+//   });
+//   return result.data;
+// }
 
 
-async function DangNhapNguoiDung({ loaiNguoiDung, email, soDienThoai, matKhau, }) {
-  const result = await axios.post(`${import.meta.env.VITE_AUTH_URL}/dang-nhap`, {
-    loaiNguoiDung, email, soDienThoai, matKhau,
-  });
-  return result.data;
-}
-
-/*
-
-{
-  
-  
-  
-  
-}
- */
 const OnlineExamLogin = () => {
   const [form] = Form.useForm();
   const [rememberPassword, setRememberPassword] = useState(false);

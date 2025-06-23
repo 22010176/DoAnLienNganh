@@ -1,31 +1,15 @@
 import { GoogleOutlined, LockOutlined, MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Radio, Select } from 'antd';
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Form, Input, message, Radio, Select } from 'antd';
+import { useState } from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
+
+import { DangKyNguoiDung } from '@/Api/nguoiDung';
 
 const { Option } = Select;
-/*
-{
-  "": 2,
-  "": "33333",
-  "": 1,
-  "": "2213123@gmail.com",
-  "": "333312314",
-  "": "123",
-  "": "123"
-}
-   */
-async function DangKyNguoiDung({ loaiNguoiDung, hoTen, gioiTinh, email, soDienThoai, matKhau, }) {
-  const result = await axios.post(`${import.meta.env.VITE_AUTH_URL}/dang-ky`, {
-    loaiNguoiDung, hoTen, gioiTinh, email, soDienThoai, matKhau,
-  });
-  return result;
-}
 
-const OnlineExamRegister = () => {
+function OnlineExamRegister() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [rememberPassword, setRememberPassword] = useState(false);

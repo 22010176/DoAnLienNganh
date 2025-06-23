@@ -10,19 +10,21 @@ import OnlineExamRegister from './Pages/OnlineExamRegister'
 import ChiTietMonPage from './Pages/ChiTietMonPage'
 import ChiTietBoQS from './Pages/ChiTietBoQS'
 import { PageContextProvider } from './Components/PageContext'
+import TeacherLayout from './Layout/TeacherLayout'
 
 function App() {
-
   return (
     <PageContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/lophoc" element={<LopHocPage />} />
-          <Route path="/chitietlophoc" element={<ChiTietLopPage />} />
-          <Route path="/dslophocduyet" element={<DSLopChoDuyetPage />} />
-          <Route path="/monhoc" element={<MonHocPage />} />
-          <Route path="/chitietmonhoc" element={<ChiTietMonPage />} />
-          <Route path="/chitietbocauhoi" element={<ChiTietBoQS />} />
+          <Route element={<TeacherLayout />}>
+            <Route path="/" element={<LopHocPage />} />
+            <Route path="/chitietlophoc" element={<ChiTietLopPage />} />
+            <Route path="/dslophocduyet" element={<DSLopChoDuyetPage />} />
+            <Route path="/monhoc" element={<MonHocPage />} />
+            <Route path="/chitietmonhoc" element={<ChiTietMonPage />} />
+            <Route path="/chitietbocauhoi" element={<ChiTietBoQS />} />
+          </Route>
 
           {/* Route for Online Exam Login */}
 
